@@ -3,7 +3,7 @@ import { publicDecrypt } from "crypto";
 import { ApiError } from "next/dist/server/api-utils";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/signin", "/singup", "/", "/home"]);
+const isPublicRoute = createRouteMatcher(["/sign-in", "/sing-up", "/", "/home"]);
 
 const isPublicApiRoute = createRouteMatcher(["/api/videos"]);
 
@@ -13,17 +13,17 @@ export default clerkMiddleware((auth, req) => {
   const isAccessingDashboard = currentUrl.pathname === "/home";
   const isApiRequest = currentUrl.pathname.startsWith("/api");
 
-  if(userId && isPublicRoute(req) && !isAccessingDashboard){
+  if (userId && isPublicRoute(req) && !isAccessingDashboard) {
     return NextResponse.redirect(new URL("/home", req.url));
   }
 
-  if(!userId){
-    if(!isPublicRoute(req) && !isPublicApiRoute(req)){
-      return NextResponse.redirect(new URL("/signin", req.url));
+  if (!userId) {
+    if (!isPublicRoute(req) && !isPublicApiRoute(req)) {
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     }
 
-    if(!isApiRequest && !isPublicApiRoute(req)){
-      return NextResponse.redirect(new URL("/signin", req.url));
+    if (!isApiRequest && !isPublicApiRoute(req)) {
+      return NextResponse.redirect(new URL("/sign-in", req.url));
     }
   }
 });
