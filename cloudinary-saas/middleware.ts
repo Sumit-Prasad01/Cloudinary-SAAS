@@ -1,10 +1,12 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { publicDecrypt } from "crypto";
-import { ApiError } from "next/dist/server/api-utils";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/sign-in", "/sing-up", "/", "/home"]);
-
+const isPublicRoute = createRouteMatcher([
+  "/sign-in",
+  "/sign-up",
+  "/",
+  "/home",
+]);
 const isPublicApiRoute = createRouteMatcher(["/api/videos"]);
 
 export default clerkMiddleware((auth, req) => {
@@ -22,10 +24,11 @@ export default clerkMiddleware((auth, req) => {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
 
-    if (!isApiRequest && !isPublicApiRoute(req)) {
+    if (isApiRequest && !isPublicApiRoute(req)) {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
   }
+  return NextResponse.next();
 });
 
 export const config = {

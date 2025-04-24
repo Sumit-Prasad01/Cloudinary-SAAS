@@ -1,5 +1,5 @@
-import { SignIn } from '@clerk/nextjs'
+import { ClerkProvider, SignIn } from '@clerk/nextjs'
 
 export default function Page() {
-  return <SignIn />
+  return (<ClerkProvider><SignIn /></ClerkProvider>)
 }
